@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/green"
+    tools:context="com.nikmc.kc.ConfirmationActivity">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_message"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeConfirm"
+            android:textColor="@color/white"
+            android:id="@+id/textView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="7847748671"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeNumber"
+            android:textColor="@color/white"
+            android:id="@+id/NumberText"
+            android:layout_marginTop="@dimen/margin_Top_number_Confitmation"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/edt_focused"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/margin_Top_button_Confitmation"
+            android:text="@string/btn_ConfirmBack"
+            android:id="@+id/btnBack" />
+
+    </LinearLayout>
+
+</RelativeLayout>

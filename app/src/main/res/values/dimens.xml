@@ -13,9 +13,11 @@
     <dimen name="margin_Top_number_Confitmation">10dp</dimen>
 
     <dimen name="textSize">20sp</dimen>
+    <dimen name="textSietitle">14sp</dimen>
     <dimen name="textSizeConfirm">14sp</dimen>
     <dimen name="textSizeNumber">30sp</dimen>
     <dimen name="padding">10dp</dimen>
     <dimen name="imageSize">75dp</dimen>
+    <dimen name="textSizeNavigation">14sp</dimen>
 
 </resources>

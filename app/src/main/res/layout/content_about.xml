@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/white"
+    tools:showIn="@layout/app_bar_about" tools:context="com.nikmc.kc.About">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/abc_primary_text_disable_only_material_light"
+                android:layout_marginTop="15dp"
+                android:textSize="20sp"
+                android:text="Контакт-центр при Главе города Ульяновска"
+                />
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/abc_primary_text_disable_only_material_light"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Бесплатная правовая помощь потребителям жилищно-коммунальных услуг."/>
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+                android:textColor="@color/abc_primary_text_disable_only_material_light"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/text_about_part"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/abc_primary_text_disable_only_material_light"
+                android:text="Отделы Контакт-центра:"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+<!--                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:text="1. "/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/text_about_part1"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+<!--                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:text="2. "/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/text_about_part2"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+<!--                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:text="3. "/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/text_about_part3"/>
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+<!--                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:text="4. "/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/text_about_part4"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+<!--                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:text="5. "/>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/abc_primary_text_disable_only_material_light"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/text_about_part5"/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/abc_primary_text_disable_only_material_light"
+            android:text="Адрес: г. Ульяновск, ул. Карла Маркса. д. 15, каб. 320"
+            />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

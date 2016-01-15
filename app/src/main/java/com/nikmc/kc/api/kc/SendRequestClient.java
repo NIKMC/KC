@@ -1,7 +1,9 @@
 package com.nikmc.kc.api.kc;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.nikmc.kc.logic.CheckValid;
 import com.nikmc.kc.model.Bid;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -18,73 +20,85 @@ import java.util.ArrayList;
 public class SendRequestClient extends LKWebServerClient {
 
     Bid bidrequest;
-
-    protected SendRequestClient(Context context, Bid bid) {
+    ArrayList<String> imageCode;
+    public SendRequestClient(Context context, String url, Bid bid, ArrayList<String> image) {
         super(context);
+        this.URL = url;
         this.bidrequest = bid;
+        this.imageCode = image;
     }
 
     @Override
     public String getSoapXml() {
+        Log.d("SOAP", "getSoapXml start");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(XML_TITLE_OPEN);
         stringBuilder.append("<SendReq xmlns=\"http://tempuri.org/\">");
-
         stringBuilder.append("<req>");
-        stringBuilder.append("<RefRequestCCTypeName>").append("интернет-приемная").append("</RefRequestCCTypeName>");
-
-        stringBuilder.append("<Number>").append("</Number>");
-        stringBuilder.append("<DateBegin>").append("</DateBegin>");
-
+        stringBuilder.append("<RefRequestCCTypeName>").append("интернет-приёмная").append("</RefRequestCCTypeName>");
+//        stringBuilder.append("<Number>").append("null").append("</Number>");
+//        stringBuilder.append("<DateBegin>").append("null").append("</DateBegin>");
         stringBuilder.append("<Applicant>");
-        stringBuilder.append("<LastName>").append(bidrequest.getCity()).append("</LastName>");
-        stringBuilder.append("<FirstName>").append(bidrequest.getCity()).append("</FirstName>");
-        stringBuilder.append("<MiddleName>").append(bidrequest.getCity()).append("</MiddleName>");
-        stringBuilder.append("<Phone>").append(bidrequest.getPhone()).append("</Phone>");
+        if(bidrequest.getFIO().trim().contains(" ")){
+            if(CheckValid.isFIO_valid(bidrequest.getFIO().trim())){
+                stringBuilder.append("<LastName>").append(bidrequest.getFIO().substring(0, bidrequest.getFIO().indexOf(" ")).trim()).append("</LastName>");
+                stringBuilder.append("<FirstName>").append(bidrequest.getFIO().substring(bidrequest.getFIO().indexOf(" ") + 1, bidrequest.getFIO().lastIndexOf(" ")).trim()).append("</FirstName>");
+                stringBuilder.append("<MiddleName>").append(bidrequest.getFIO().substring(bidrequest.getFIO().lastIndexOf(" ")+ 1).trim()).append("</MiddleName>");
+
+            } else {
+                stringBuilder.append("<LastName>").append(bidrequest.getFIO().substring(0, bidrequest.getFIO().indexOf(" ")).trim()).append("</LastName>");
+                stringBuilder.append("<FirstName>").append(bidrequest.getFIO().substring(bidrequest.getFIO().indexOf(" ") + 1).trim()).append("</FirstName>");
+                stringBuilder.append("<MiddleName>").append("").append("</MiddleName>");
+            }
+        }else {
+            stringBuilder.append("<LastName>").append("").append("</LastName>");
+            stringBuilder.append("<FirstName>").append(bidrequest.getFIO().trim()).append("</FirstName>");
+            stringBuilder.append("<MiddleName>").append("").append("</MiddleName>");
+        }
+
+        stringBuilder.append("<Phone>").append("+7" + bidrequest.getPhone()).append("</Phone>");
         stringBuilder.append("</Applicant>");
-
         stringBuilder.append("<ApplicantAddress>");
-        stringBuilder.append("<AddressId>").append("</AddressId>");
+//        stringBuilder.append("<AddressId>").append("null").append("</AddressId>");
         stringBuilder.append("<Region>").append("Ульяновская область").append("</Region>");
-        stringBuilder.append("<RegionType>").append("</RegionType>");
+//        stringBuilder.append("<RegionType>").append("null").append("</RegionType>");
         stringBuilder.append("<City>").append(bidrequest.getCity()).append("</City>");
-        stringBuilder.append("<CityType>").append("</CityType>");
-        stringBuilder.append("<Locality>").append("</Locality>");
-        stringBuilder.append("<LocalityType>").append("</LocalityType>");
+//        stringBuilder.append("<CityType>").append("null").append("</CityType>");
+//        stringBuilder.append("<Locality>").append("null").append("</Locality>");
+//        stringBuilder.append("<LocalityType>").append("null").append("</LocalityType>");
         stringBuilder.append("<Street>").append(bidrequest.getStreet()).append("</Street>");
-        stringBuilder.append("<StreetType>").append("</StreetType>");
+//        stringBuilder.append("<StreetType>").append("null").append("</StreetType>");
         stringBuilder.append("<House>").append(bidrequest.getHouse()).append("</House>");
-        stringBuilder.append("<Flat>").append("</Flat>");
+        //stringBuilder.append("<Flat>").append("null").append("</Flat>");
         stringBuilder.append("</ApplicantAddress>");
-
-        stringBuilder.append("<ShortContent>").append(bidrequest.getContent()).append("</ShortContent>");
-        stringBuilder.append("<VisitDate>").append("</VisitDate>");
-
-/*        <Documents>
-        <Document>
-        <Name>string</Name>
-        <Data>base64Binary</Data>
-        </Document>
-        <Document>
-        <Name>string</Name>
-        <Data>base64Binary</Data>
-        </Document>
-        </Documents>
-    */
-
+        stringBuilder.append("<ShortContent>").append("test")/*.append(bidrequest.getContent())*/.append("</ShortContent>");
+//        stringBuilder.append("<VisitDate>").append("null").append("</VisitDate>");
+        stringBuilder.append("<Documents>");
+        Log.d("SOAP", "imagecode size = " + imageCode.size());
+        for(int i=0; i< imageCode.size(); i++) {
+            Log.d("SOAP", "imagecode =" + imageCode.get(i));
+            stringBuilder.append("<Document>");
+            stringBuilder.append("<Name>").append("image"+i +".JPEG").append("</Name>");
+            stringBuilder.append("<Data>").append(imageCode.get(i)).append("</Data>");
+            stringBuilder.append("</Document>");
+        }
+        stringBuilder.append("</Documents>");
         stringBuilder.append("</req>");
         stringBuilder.append("</SendReq>");
         stringBuilder.append(XML_TITLE_END);
+        Log.d("SOAP", "getSoapXml finish");
         return stringBuilder.toString();
     }
 
     @Override
     public ArrayList getResponceObject(String xml) throws IOException, XmlPullParserException {
+        Log.d("SOAP", "getResponceObject start");
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         String text = null;
         ArrayList<String> strings = new ArrayList<>();
         XmlPullParser parser = factory.newPullParser();
+        Log.d("SOAP", "soaprequest" + xml);
         parser.setInput(new StringReader(xml));
         int eventType = parser.getEventType();
         while(eventType != XmlPullParser.END_DOCUMENT) {
@@ -105,6 +119,8 @@ public class SendRequestClient extends LKWebServerClient {
             }
             eventType = parser.next();
         }
+        Log.d("SOAP", "getResponceObject finish");
+
         return strings;
 
     }

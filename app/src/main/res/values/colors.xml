@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="green">#4A942D</color>
+    <color name="dark_green">#008000</color>
 
     <color name="edt_focused">#00BB00</color>
 

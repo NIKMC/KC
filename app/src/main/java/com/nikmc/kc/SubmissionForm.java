@@ -1,15 +1,22 @@
 package com.nikmc.kc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -19,50 +26,78 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.nikmc.kc.api.Request;
+import com.nikmc.kc.api.kc.SendRequestClient;
 import com.nikmc.kc.logic.CheckValid;
 import com.nikmc.kc.logic.GetImagePath;
+import com.nikmc.kc.logic.ImageConvert;
+import com.nikmc.kc.model.Bid;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
 
-public class SubmissionForm extends AppCompatActivity {
+public class SubmissionForm extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Request> , NavigationView.OnNavigationItemSelectedListener  {
 
-    AutoCompleteTextView mFIO, mCity, mStreet, mHouse, mPhone;
+    AutoCompleteTextView/* mFIO,*/ mCity, mStreet, mHouse, mPhone;
+    EditText mFIO;//, mCity, mStreet, mHouse, mPhone;
     Button btnSendMessage;
     EditText mMessage;
     ImageButton image1, image2, image3;
-
-
+    private Bid bidrequest;
     private static final int PROFILE_REQUEST = 0;
     private static final int GALLERY_REQUEST1 = 1;
     private static final int GALLERY_REQUEST2 = 2;
     private static final int GALLERY_REQUEST3 = 3;
     private boolean LoadImage = false;
     private Uri selectedImage;
-    private Bitmap mEditImage;
+    private Bitmap mEditImage1 = null, mEditImage2 = null, mEditImage3 = null;
     private ImageView mImageAvatar;
     private static final String LOG = "Форма отправки";
-
-
+    private ArrayList<String> imageString = new ArrayList<>();
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        setContentView(R.layout.activity_main_submission);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abc_layout);
-        setContentView(R.layout.activity_submission_form);
-        mFIO = (AutoCompleteTextView) findViewById(R.id.et_fio);
+        //setContentView(R.layout.activity_submission_form);
+        //mFIO = (AutoCompleteTextView) findViewById(R.id.et_fio);
         mCity = (AutoCompleteTextView) findViewById(R.id.et_city);
         mStreet = (AutoCompleteTextView) findViewById(R.id.et_street);
         mHouse = (AutoCompleteTextView) findViewById(R.id.et_house);
         mPhone = (AutoCompleteTextView) findViewById(R.id.et_telephone);
+        mFIO = (EditText) findViewById(R.id.et_fio);
+        /*mCity = (EditText) findViewById(R.id.et_city);
+        mStreet = (EditText) findViewById(R.id.et_street);
+        mHouse = (EditText) findViewById(R.id.et_house);
+        mPhone = (EditText) findViewById(R.id.et_telephone);
+        */
         btnSendMessage = (Button) findViewById(R.id.btnSendMessage);
         mMessage = (EditText) findViewById(R.id.et_message);
         image1 = (ImageButton) findViewById(R.id.Image1);
         image2 = (ImageButton) findViewById(R.id.Image2);
         image3 = (ImageButton) findViewById(R.id.Image3);
-        mPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-
-        doInt();
+//        mPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        filterFIO();
 
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +137,12 @@ public class SubmissionForm extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        doInt();
+    }
+
     private void doInt() {
 
         mFIO.setText(SubmissionForm.this.getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_preference_fio", ""));
@@ -109,6 +150,31 @@ public class SubmissionForm extends AppCompatActivity {
         mCity.setText(SubmissionForm.this.getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_preference_city", ""));
         mStreet.setText(SubmissionForm.this.getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_preference_street", ""));
         mHouse.setText(SubmissionForm.this.getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_preference_house", ""));
+        field();
+    }
+
+    private void field() {
+        mFIO.setError(null);
+        mCity.setError(null);
+        mStreet.setError(null);
+        mHouse.setError(null);
+        mPhone.setError(null);
+        mMessage.setError(null);
+
+    }
+    private void filterFIO(){
+        InputFilter customFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (!(Character.isLetter(source.charAt(i)) || Character.isSpaceChar(source.charAt(i)))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        mFIO.setFilters(new InputFilter[]{ customFilter});
     }
 
     private void attemptSentMessage() {
@@ -130,9 +196,12 @@ public class SubmissionForm extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-
-
-        if (!CheckValid.isPhoneValid(phone.replaceAll("[^0-9+]",""))) {
+        if (CheckValid.isValid(fio.trim())) {
+            mFIO.setError(CheckValid.isEmptyFIOValid(fio.trim()));
+            focusView = mFIO;
+            cancel = true;
+        }
+        if (!CheckValid.isPhoneValid(phone)) {
             mPhone.setError(getResources().getString(R.string.phone_valid));
             focusView = mPhone;
             cancel = true;
@@ -169,10 +238,27 @@ public class SubmissionForm extends AppCompatActivity {
         }
         if (cancel) {
             focusView.requestFocus();
+//            btnSendMessage.requestFocusFromTouch();
         } else {
-            Toast.makeText(SubmissionForm.this,"Успешно отправлено",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(SubmissionForm.this, ConfirmationActivity.class));
-            finish();
+            bidrequest = new Bid(fio.trim().replaceAll("[!\"#$%&'()*+,-./:;<=>?@^_`{|}~]", "").trim(), phone.replaceAll("[^0-9]", ""), city, street, house, message);
+            if(mEditImage1 != null)
+                imageString.add(ImageConvert.convertIntoBase64(mEditImage1));
+            if(mEditImage2 != null)
+                imageString.add(ImageConvert.convertIntoBase64(mEditImage2));
+            if(mEditImage3 != null)
+                imageString.add(ImageConvert.convertIntoBase64(mEditImage3));
+
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("Отправка заявки. Подождите...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            Loader loader = getSupportLoaderManager().initLoader(0, null, this);
+            loader.forceLoad();
+//            btnSendMessage.setVisibility(View.INVISIBLE);
+            /*startActivity(new Intent(SubmissionForm.this, ConfirmationActivity.class));
+            finish();*/
         }
 
     }
@@ -183,73 +269,58 @@ public class SubmissionForm extends AppCompatActivity {
 
 
         switch (requestCode) {
-            case PROFILE_REQUEST:
+            /*case PROFILE_REQUEST:
                 if(resultCode == RESULT_OK) {
                 doInt();
                 }
-                break;
+                break;*/
             case GALLERY_REQUEST1:
                 if(resultCode == RESULT_OK){
+                    int px = getResources().getDimensionPixelSize(R.dimen.imageSize);
                     selectedImage = imageReturnedIntent.getData();
                     Log.d(LOG, "PATH = " + GetImagePath.getRealPathFromURI(getApplicationContext(), selectedImage));
                     image1.setImageURI(null);
-                    image1.setImageURI(selectedImage);
+                    image1.setImageBitmap(ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px));
                     LoadImage = true;
 
-                    try {
+
                         if (selectedImage != null)
-                            mEditImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                    } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                            mEditImage1 = ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px);//MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
                     // imageHome.setImageBitmap(galleryPic);
                 }
                 else if (resultCode == RESULT_CANCELED) LoadImage = false;
                 break;
             case GALLERY_REQUEST2:
                 if(resultCode == RESULT_OK){
+                    int px = getResources().getDimensionPixelSize(R.dimen.imageSize);
                     selectedImage = imageReturnedIntent.getData();
                     Log.d(LOG, "PATH = " + GetImagePath.getRealPathFromURI(getApplicationContext(), selectedImage));
                     image2.setImageURI(null);
-                    image2.setImageURI(selectedImage);
+                    image2.setImageBitmap(ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px));
                     LoadImage = true;
 
-                    try {
+
                         if (selectedImage != null)
-                            mEditImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                    } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                            mEditImage2 = ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px);//MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
                     // imageHome.setImageBitmap(galleryPic);
                 }
                 else if (resultCode == RESULT_CANCELED) LoadImage = false;
                 break;
             case GALLERY_REQUEST3:
                 if(resultCode == RESULT_OK){
-                    selectedImage = imageReturnedIntent.getData();
+                    int px = getResources().getDimensionPixelSize(R.dimen.imageSize);
+                    selectedImage =  imageReturnedIntent.getData();
                     Log.d(LOG, "PATH = " + GetImagePath.getRealPathFromURI(getApplicationContext(), selectedImage));
                     image3.setImageURI(null);
-                    image3.setImageURI(selectedImage);
+                    image3.setImageBitmap(ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px));
                     LoadImage = true;
 
-                    try {
+
                         if (selectedImage != null)
-                            mEditImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                    } catch (FileNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                            mEditImage3 = ImageConvert.decodeSampledBitmapFromResource(getApplicationContext(), selectedImage, px, px);//MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
                     // imageHome.setImageBitmap(galleryPic);
                 }
                 else if (resultCode == RESULT_CANCELED) LoadImage = false;
@@ -259,6 +330,17 @@ public class SubmissionForm extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
@@ -278,6 +360,61 @@ public class SubmissionForm extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }*/
+
+
+    @Override
+    public Loader<Request> onCreateLoader(int id, Bundle args) {
+        return (new SendRequestClient(this, "http://tempuri.org/SendReq", bidrequest, imageString));
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Request> loader, Request data) {
+        if(progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+        if (data.enumType != EnumType.ERROR) {
+            if(data.enumType != EnumType.NOINTERNET) {
+                if (!data.arrayList.isEmpty()) {
+                    startActivity(new Intent(SubmissionForm.this, ConfirmationActivity.class).putExtra("number",(String)data.arrayList.get(0)));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Ошибка отправки данных, попробуйте снова", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Отсутствует подключение к сети", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Произошла ошибка, попробуйте снова", Toast.LENGTH_SHORT).show();
+        }
+//        btnSendMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Request> loader) {
+
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_request) {
+            Intent intent = new Intent(getApplicationContext(), SubmissionForm.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_myRequest) {
+            Toast.makeText(this, "Закрыто", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_profile) {
+//            startActivityForResult(new Intent(SubmissionForm.this, MyProfile.class), PROFILE_REQUEST);
+            startActivity(new Intent(SubmissionForm.this, MyProfile.class));
+        } else if (id == R.id.nav_about) {
+            startActivity(new Intent(getApplicationContext(), About.class));
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 }

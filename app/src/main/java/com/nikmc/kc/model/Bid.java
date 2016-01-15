@@ -11,6 +11,9 @@ public class Bid {
     private String House;
     private String Content;
 
+    public Bid() {
+    }
+
     public Bid(String FIO, String phone, String city, String street, String house, String content) {
         this.FIO = FIO;
         Phone = phone;

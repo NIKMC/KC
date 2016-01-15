@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.nikmc.kc.MyProfile">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_horizontal_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main_profile"
+    tools:context="com.nikmc.kc.MyProfile">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +17,12 @@
         <LinearLayout
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
 
             <TextView
@@ -44,15 +52,37 @@
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/margin_Top_text_Login"/>
 
-            <AutoCompleteTextView
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/et_telephone"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:padding="@dimen/padding"
-                android:background="@drawable/edt_border"
-                android:layout_marginTop="@dimen/margin_Top_edit_Login"/>
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:text="+7"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:padding="@dimen/padding"
+                    android:background="@color/material_grey_300"
+                    android:layout_marginTop="@dimen/margin_Top_edit_Login"/>
+
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_telephone"
+                    android:inputType="number"
+                    android:hint="@string/hint_phone"
+                    android:textColorHint="#ffe0e0e0"
+                    android:maxLines="1"
+                    android:maxLength="10"
+                    android:padding="@dimen/padding"
+                    android:background="@drawable/edt_border"
+                    android:layout_marginTop="@dimen/margin_Top_edit_Login"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,6 +145,7 @@
         android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
         android:id="@+id/btnSave"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textColor="@color/white"
         android:background="@color/green"
         android:text="@string/btn_Save"

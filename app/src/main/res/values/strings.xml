@@ -4,12 +4,27 @@
     <string name="action_settings">Settings</string>
     <string name="action_profile">Мой профиль</string>
     <string name="title_activity_login">Заявка в Контакт-центр</string>
-    <string name="title_activity_profile">Мои данные</string>
+    <string name="title_activity_log">Мои данные</string>
+    <string name="title_activity_profile">Мой профиль</string>
 
     <string name="text_fio">ФИО</string>
     <string name="text_address">Адрес</string>
     <string name="text_telephone">Телефон</string>
     <string name="text_mail">Адрес электронной почты</string>
+
+    <string name="text_title_login">Введите данные, которые будут автоматически использоваться для оформления заявки.\n\nЭто необязательный шаг. Вы всегда можете изменить их позже в настройках профиля.</string>
+
+    <string name="text_about_part">Консультации гражданам по:\n\n- юридическим\n- техническим\n- экономическим\n\nвопросам в сфере потребления жилищно-коммунальных услуг.</string>
+    <string name="text_about_part1"><b>1.</b> Консультационно-юридический отдел (горячая линия)- <b>737-911</b></string>
+    <string name="text_about_part2"><b>2.</b> Отдел юридическо-экономического анализа и судебной практики (личный прием граждан) - запись по телефону <b>737-911</b></string>
+    <string name="text_about_part3"><b>3.</b> Отдел ЖКХ и благоустройства (актирование с участием инженеров при “недотопе”, низкой температуре ГВС, неисправностях системы вентиляции, невыполнении обязательств по содержании и ремонту общего имущества МКД и т. д.) - заявки на выезд инженеров по телефону - <b>737-911</b></string>
+    <string name="text_about_part4"><b>4.</b> Отдел по взаимодействию с территориальным общественным самоуправлением - <b>27-06-32</b></string>
+    <string name="text_about_part5"><b>5.</b> Единая диспетчерская служба (аварийные заявки) - <b>05</b></string>
+
+
+
+    <string name="text_title_navigation">Контакт-центр при Главе города Ульяновска</string>
+
 
     <string name="text_address_message">Адрес объекта</string>
     <string name="text_fio_message">ФИО</string>
@@ -22,10 +37,10 @@
     <string name="text_street_message">Улица</string>
     <string name="text_house_message">Дом</string>
 
-    <string name="confirm_message">Ваша заявка принята.Ей присвоен номер №</string>
+    <string name="confirm_message">Ваша заявка принята. Ей присвоен номер</string>
 
 
-    <string name="btn_Login">Войти</string>
+    <string name="btn_Login">Продолжить</string>
     <string name="btn_Save">Сохранить</string>
     <string name="btn_SendMessage">Отправить заявку</string>
     <string name="btn_ConfirmBack">Вернуться назад</string>
@@ -38,18 +53,15 @@
 
     <string name="empty_field">Поле не может быть пустым</string>
     <!--<string name="empty_email">Ошибка! Введите почту!</string>-->
-    <string name="phone_valid">Неверный номер телефона</string>
+    <string name="phone_valid">Неверный формат номера телефона</string>
+    <string name="fio_valid">Неверно введено ФИО</string>
     <string name="email_valid">Email является недействительным</string>
+    <string name="title_activity_main">Navigation</string>
+    <string name="hint_phone">9601234567</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_about">О Контакт-центре</string>
 
-
-    <string-array name="Category">
-        <item>Категория 1</item>
-        <item>Категория 2</item>
-        <item>Категория 3</item>
-        <item>Категория 4</item>
-        <item>Категория 5</item>
-        <item>Категория 6</item>
-    </string-array>
 
 
 

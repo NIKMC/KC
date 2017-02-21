@@ -3,11 +3,11 @@
 
     <group android:checkableBehavior="single" >
         <item android:id="@+id/nav_myRequest"  android:enabled="false"
-            android:title="Мои заявки" />
+            android:title="@string/menu1" />
         <item android:id="@+id/nav_profile"
-            android:title="Мой профиль" />
+            android:title="@string/menu2" />
         <item android:id="@+id/nav_about"
-            android:title="О Контакт-центре" />
+            android:title="@string/menu3" />
     </group>
 
     <!--

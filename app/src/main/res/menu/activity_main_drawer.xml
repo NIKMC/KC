@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:id="@+id/gr1" android:checkableBehavior="none">
+        <item android:id="@+id/nav_request"
+            android:title="@string/menu0"/>
+    </group>
+    <group android:id="@+id/gr2" android:checkableBehavior="none">
+        <item android:id="@+id/nav_myRequest" android:enabled="false"
+            android:title="@string/menu1" />
+    </group>
+    <group android:id="@+id/gr3" android:checkableBehavior="none">
+        <item android:id="@+id/nav_profile"
+            android:title="@string/menu2" />
+    </group>
+    <group android:id="@+id/gr4" android:checkableBehavior="none">
+        <item android:id="@+id/nav_about"
+            android:title="@string/menu3" />
+    </group>
+
+
+
+<!--
+    <item android:title="Communicate">
+        <menu>
+        <group android:checkableBehavior="single">
+            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
+                android:title="Share" />
+            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"
+                android:title="Send" />
+        </group>
+        </menu>
+    </item>
+-->
+
+</menu>

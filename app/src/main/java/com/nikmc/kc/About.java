@@ -8,7 +8,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class About extends AppCompatActivity
@@ -21,7 +23,8 @@ public class About extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        TextView text = (TextView)findViewById(R.id.tv0Html);
+        text.setText(Html.fromHtml("Приложение <font color='#4A942D'><b>Профессиональный Гражданин Ульяновской Области</b></font> автоматизирует создание заявок в Контакт-центр при Главе города Ульяновска, позволяет следить за статусом их обработки, информирует о мероприятиях Контакт-центра и режиме его работы."));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

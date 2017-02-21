@@ -2,7 +2,6 @@ package com.nikmc.kc.api;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -102,10 +101,7 @@ public class WebServerClient extends AsyncTaskLoader<Request> {
         } catch (java.io.IOException e) {
             e.printStackTrace();
             request.enumType = EnumType.ERROR;
-            if (Build.VERSION.SDK_INT<=Build.VERSION_CODES.LOLLIPOP_MR1) {
-                // call something for API Level 22-
                 urlError(connection);
-            }
         } catch (XmlPullParserException e) {
             e.printStackTrace();
             request.enumType = EnumType.ERROR;
@@ -114,23 +110,23 @@ public class WebServerClient extends AsyncTaskLoader<Request> {
 
     }
 
-    private void urlError(HttpURLConnection connection){
+    private void urlError(HttpURLConnection connection) {
         Log.e("SOAP", "urlError connection");
-        String line;
-        StringBuilder responseBuilder = new StringBuilder();
-        InputStreamReader input = new InputStreamReader(connection.getErrorStream());
-        try {
-            BufferedReader reader = new BufferedReader(input);
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
+        if (connection.getContentEncoding() != null){
+            String line;
+            StringBuilder responseBuilder = new StringBuilder();
+            InputStreamReader input = new InputStreamReader(connection.getErrorStream());
+            try {
+                BufferedReader reader = new BufferedReader(input);
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("SOAP", responseBuilder.toString());
         }
-        Log.e("SOAP", responseBuilder.toString());
-
-
     }
 
     protected static HostnameVerifier getHostnameVerifier()

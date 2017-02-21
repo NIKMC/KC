@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">KC</string>
+    <string name="app_name">Профессиональный Гражданин</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_profile">Мой профиль</string>
     <string name="title_activity_login">Заявка в Контакт-центр</string>
     <string name="title_activity_log">Мои данные</string>
     <string name="title_activity_profile">Мой профиль</string>
+    <string name="titlePG">Профессиональный Гражданин</string>
 
     <string name="text_fio">ФИО</string>
     <string name="text_address">Адрес</string>
@@ -13,6 +14,9 @@
     <string name="text_mail">Адрес электронной почты</string>
 
     <string name="text_title_login">Введите данные, которые будут автоматически использоваться для оформления заявки.\n\nЭто необязательный шаг. Вы всегда можете изменить их позже в настройках профиля.</string>
+
+    <string name="text_about_title">Контакт-центр при Главе города Ульяновска</string>
+    <!--<string name="text_about_title0">Приложение <font color="#00FF00"><b>Профессиональный Гражданин Ульяновской Области</b><font> автоматизирует создание заявок в Контакт-центр при Главе города Ульяновска, позволяет следить за статусом их обработки, информирует о мероприятиях Контакт-центра и режиме его работы.</string>-->
 
     <string name="text_about_part">Консультации гражданам по:\n\n- юридическим\n- техническим\n- экономическим\n\nвопросам в сфере потребления жилищно-коммунальных услуг.</string>
     <string name="text_about_part1"><b>1.</b> Консультационно-юридический отдел (горячая линия)- <b>737-911</b></string>
@@ -23,7 +27,7 @@
 
 
 
-    <string name="text_title_navigation">Контакт-центр при Главе города Ульяновска</string>
+    <string name="text_title_navigation">Профессиональный Гражданин Ульяновской области</string>
 
 
     <string name="text_address_message">Адрес объекта</string>
@@ -60,9 +64,12 @@
     <string name="hint_phone">9601234567</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_activity_about">О Контакт-центре</string>
+    <string name="title_activity_about">О приложении</string>
 
-
+    <string name="menu0">Отправить заявку</string>
+    <string name="menu1">Мои заявки</string>
+    <string name="menu2">Мой профиль</string>
+    <string name="menu3">О приложении</string>
 
 
 </resources>

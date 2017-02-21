@@ -2,6 +2,7 @@ package com.nikmc.kc;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +34,9 @@ import com.nikmc.kc.logic.GetImagePath;
 import com.nikmc.kc.logic.ImageConvert;
 import com.nikmc.kc.model.Bid;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SubmissionForm extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Request> , NavigationView.OnNavigationItemSelectedListener  {
 
@@ -248,6 +251,11 @@ public class SubmissionForm extends AppCompatActivity implements LoaderManager.L
             if(mEditImage3 != null)
                 imageString.add(ImageConvert.convertIntoBase64(mEditImage3));
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String currentDateandTime = sdf.format(new Date());
+
+            if (getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_send_message", "").isEmpty() ){
+
             progressDialog = new ProgressDialog(this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setMessage("Отправка заявки. Подождите...");
@@ -256,6 +264,20 @@ public class SubmissionForm extends AppCompatActivity implements LoaderManager.L
 
             Loader loader = getSupportLoaderManager().initLoader(0, null, this);
             loader.forceLoad();
+
+            } else  if(Integer.parseInt(currentDateandTime.substring(currentDateandTime.indexOf('_')+1)) - Integer.parseInt(getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_send_message", "").substring(getSharedPreferences("KCpref", SubmissionForm.this.MODE_PRIVATE).getString("key_send_message", "").indexOf('_')+1)) >100  ){
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("Отправка заявки. Подождите...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                Loader loader = getSupportLoaderManager().initLoader(0, null, this);
+                loader.forceLoad();
+
+            } else {
+                Toast.makeText(this, "Подождите 1 мин.", Toast.LENGTH_SHORT).show();
+            }
 //            btnSendMessage.setVisibility(View.INVISIBLE);
             /*startActivity(new Intent(SubmissionForm.this, ConfirmationActivity.class));
             finish();*/
@@ -377,6 +399,15 @@ public class SubmissionForm extends AppCompatActivity implements LoaderManager.L
             if(data.enumType != EnumType.NOINTERNET) {
                 if (!data.arrayList.isEmpty()) {
                     startActivity(new Intent(SubmissionForm.this, ConfirmationActivity.class).putExtra("number",(String)data.arrayList.get(0)));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                    String currentDateandTime = sdf.format(new Date());
+                    Log.d("DATATIME", "time = " + currentDateandTime);
+                    SharedPreferences preferences = getSharedPreferences("KCpref", MODE_PRIVATE);
+                    SharedPreferences.Editor prefEditor = preferences.edit();
+                    prefEditor.putString("key_send_message", currentDateandTime);
+                    prefEditor.commit();
+
+
                     finish();
                 } else {
                     Toast.makeText(this, "Ошибка отправки данных, попробуйте снова", Toast.LENGTH_SHORT).show();

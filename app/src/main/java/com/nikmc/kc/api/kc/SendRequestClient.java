@@ -71,7 +71,7 @@ public class SendRequestClient extends LKWebServerClient {
         stringBuilder.append("<House>").append(bidrequest.getHouse()).append("</House>");
         //stringBuilder.append("<Flat>").append("null").append("</Flat>");
         stringBuilder.append("</ApplicantAddress>");
-        stringBuilder.append("<ShortContent>").append("test")/*.append(bidrequest.getContent())*/.append("</ShortContent>");
+        stringBuilder.append("<ShortContent>")/*.append("test")*/.append(bidrequest.getContent()).append("</ShortContent>");
 //        stringBuilder.append("<VisitDate>").append("null").append("</VisitDate>");
         stringBuilder.append("<Documents>");
         Log.d("SOAP", "imagecode size = " + imageCode.size());

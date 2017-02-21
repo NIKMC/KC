@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="serverURL">http://deputat.aisgorod.ru:8090/RequestsService%D0%A1%D0%A1.asmx</string>
+    <string name="serverURL">http://deputat.aisgorod.ru:8092/RequestsService%D0%A1%D0%A1.asmx</string>
 </resources>

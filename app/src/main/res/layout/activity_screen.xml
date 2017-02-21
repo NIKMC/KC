@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green"
     tools:context=".ScreenActivity">
 
         <ImageView
@@ -10,7 +11,7 @@
             android:src="@drawable/logo_kc"
             android:background="@color/green"
             android:id="@+id/imageViewLogo"
-
-            />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
 
 </RelativeLayout>
